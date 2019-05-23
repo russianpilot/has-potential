@@ -3,8 +3,16 @@
  * width = 1500, height = 1000,
 */
 
-// Needed Variables
- 
+
+// Settings
+int rows = 50, cols = 50; // Number of ROWS, COLS
+int d = 10; // DENSITY of DATAPOINTS 
+
+
+
+// Needed Varables
+int[][] O_a = new int[rows][cols]; // Object_array: Saves Objects in FIELD
+int[][] P_a = new int[rows*d][cols*d] // Potential_array: Saves Potential of the FIELD
  
  
 // Main Code
