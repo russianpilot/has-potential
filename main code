@@ -1,0 +1,19 @@
+// Using Processing
+/* Windows Size
+ * width = 1500, height = 1000,
+*/
+
+// Needed Variables
+ 
+ 
+ 
+// Main Code
+viod setup(){
+  size(1500, 1000, P2D);  // Sets Window to 1500 x 1000
+  bachground(0);  // Defines Background "Black"
+  colorMode(HSB, 100, 100, 100);  // Using HSB with HUE <100>, SATURATION <100>, BRITHNESS <100>
+}
+
+void draw(){
+  
+}
