@@ -7,10 +7,15 @@ int s = 52;
 
 int[][] oa = new int[s][s];
 float[][] pa = new float[s*d][s*d];
-float[] tr = new float[5];
+
+// data logger for point:
+int p_x = 11;
+int p_y = 26;
+float[] tr = new float[1000000]; // einfach mal geraten, dass vorher das feld fertig gerechnet ist
 
 float delta = 1;
 float k = 0.1; // Iteration Steps
+int counter = 0;
 
 int x_off = 50;
 int y_off = 50;
@@ -78,7 +83,7 @@ void setup() {
     line(x_off, y_off+sq_s*d*(26-i), x_off-10-l, y_off+sq_s*d*(26-i));
     text(i, x_off-45, y_off+sq_s*d*(26-i)+5);
   }
-  for(int i = -11; i < 42; i++){
+  for (int i = -11; i < 42; i++) {
     int l;
     if ( i % 5 == 0) {
       fill(255, 0, 0);
@@ -88,7 +93,7 @@ void setup() {
       l = 0;
     }
     stroke(255, 0, 0);
-    line(x_off+sq_s*d*(i+11),y_off+832,x_off+sq_s*d*(i+11), y_off+832+10+l);
+    line(x_off+sq_s*d*(i+11), y_off+832, x_off+sq_s*d*(i+11), y_off+832+10+l);
     text(i, x_off+sq_s*d*(i+11)-10, y_off+832+30);
   }
 
@@ -97,7 +102,7 @@ void setup() {
   fill(255, 100, 0);
   triangle(170+x_off+832, y_off+10, 180+x_off+832, y_off+10, 175+x_off+832, y_off);
   line(175+x_off+832, y_off, 175+x_off+832, y_off+832);
-  
+
   triangle(170+x_off+832+832-10, x_off+832-5, 170+x_off+832+832-10, y_off+832+5, 170+x_off+832+832, y_off+832);
   line(170+x_off+832, y_off+832, 170+x_off+832+832, y_off+832);
 }
@@ -112,8 +117,14 @@ void draw() {
           delta += pa[i][j]*100;
           pa[i][j] = (pa[i-1][j]+pa[i+1][j]+pa[i][j-1]+pa[i][j+1])/4;
           delta -= pa[i][j]*100;
+
+          // data logger
+          if (p_x == i && p_y == j) {
+            tr[counter+1] = pa[i][j]-tr[counter];
+          }
         }
       }
+      counter++;
     }
     delta /= s*d*s*d;
 
@@ -125,14 +136,18 @@ void draw() {
         rect(i*sq_s+x_off, j*sq_s+y_off, sq_s, sq_s);
       }
     }
+    // info Chart Top
     stroke(0, 100, 0);
     fill(0, 0, 100);
-    rect(730, 930, 100, 50);
-    rect(0,0,80,20);
+
+    rect(0, 0, 500, 45);
     fill(0, 100, 0);
-    text(abs(delta), 750, 950);
+
+    text("FPS: ", 5, 20); text(frameRate, 35, 20);
+    text("Diff: ", 120, 20); text(abs(delta), 160, 20);
+    text("Counter: ", 250, 20); text(counter, 320, 20);
     
-    text(frameRate, 0, 15);
+    text("Potential ("+ (p_x) + "|" + (p_y) + "):"+ map((pa[p_x][p_y]+pa[p_x+1][p_y]+pa[p_x][p_y+1]+pa[p_x+1][p_y+1])/4, 240, 60, 0, 100), 5, 40);
   }
 
   noFill();
