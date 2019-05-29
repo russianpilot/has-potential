@@ -147,7 +147,7 @@ void draw() {
     text("Diff: ", 120, 20); text(abs(delta), 160, 20);
     text("Counter: ", 250, 20); text(counter, 320, 20);
     
-    text("Potential ("+ (p_x) + "|" + (p_y) + "):"+ map((pa[p_x][p_y]+pa[p_x+1][p_y]+pa[p_x][p_y+1]+pa[p_x+1][p_y+1])/4, 240, 60, 0, 100), 5, 40);
+    text("Potential ("+ (p_x-11) + "|" + (p_y-26) + "): "+ map((pa[p_x][p_y]+pa[p_x+1][p_y]+pa[p_x][p_y+1]+pa[p_x+1][p_y+1])/4, 240, 60, 0, 100), 5, 40);
   }
 
   noFill();
