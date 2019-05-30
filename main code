@@ -12,11 +12,13 @@ int[][] oa = new int[s][s];
 float[][] pa = new float[s*d][s*d];
 
 // data logger for point:
-int p_x = 21;
-int p_y = 26;
-int max_data_point = 499;  // Maximale Anzahl (fehlerfrei) biss 1000
+int p_x = 25; // 21
+int p_y = 25; // 26
+int max_data_point = 999;  // Maximale Anzahl (fehlerfrei) biss 1000
 float[] tr = new float[1000000]; // einfach mal geraten, dass vorher das feld fertig gerechnet ist
+float[] or = new float[1000000];
 
+float f = 1.5;   // Overrelaxition Faktor
 float k = 1; // Potentialdifferenz fürs gesamte Feld
 float delta = k;
 int counter = 0;
@@ -44,21 +46,49 @@ void setup() {
       oa[i][j] = -1;
     }
   }
+  
+  /*
+  // Anordnung A
+  int p_rahmen = 0;
+  p_rect(0, 0, 1, 52, p_rahmen);
+  p_rect(0, 0, 52, 1, p_rahmen);
+  p_rect(0, 51, 52, 1, p_rahmen);
+  p_rect(51, 0, 1, 52, p_rahmen);
+  
+  p_rect(9, 24, 4, 4, 100);
+  */
+  
+  /*
+  // Anordnung B
+  int p_rahmen = 0;
+  p_rect(0, 0, 1, 52, p_rahmen);
+  p_rect(0, 0, 52, 1, p_rahmen);
+  p_rect(0, 51, 52, 1, p_rahmen);
+  p_rect(51, 0, 1, 52, p_rahmen);
+  
+  p_rect(9, 24, 4, 4, 100);
+  p_rect(25, 6, 1, 40, 0);
+  */
+  
+  // Anordnung C
   int p_rahmen = 20;
   p_rect(0, 0, 1, 52, p_rahmen);
   p_rect(0, 0, 52, 1, p_rahmen);
   p_rect(0, 51, 52, 1, p_rahmen);
   p_rect(51, 0, 1, 52, p_rahmen);
-
+  
   p_rect(9, 24, 4, 4, 100);
-
-  //p_rect(25, 6, 1, 40, 0);
   p_rect(41, 24, 4, 4, 0);
+  
+  
+  
+  //p_rect(25, 6, 1, 40, 0);
+  
 
   //p_rect(40, 4, 4, 6, 80);
   //p_rect(30, 30, 3, 8, 100);
   //p_rect(36, 30, 3, 8, 20);
-
+  
   // Skala
   for (int i = 20; i >= 1; i--) {
     fill(map(float(i*5), 0, 100, 240, 60), 100, 100);
@@ -119,6 +149,12 @@ void draw() {
     }
     tr[counter] = pa[p_x][p_y];
     counter++;
+    if(counter > 0){
+      or[counter] = (tr[counter] - tr[counter-1])*f+tr[counter-1];
+    }
+    else{
+      
+    }
     delta /= s*d*s*d;
 
     // Drawing Results
@@ -127,6 +163,14 @@ void draw() {
     stroke(white);
     fill(white);
     rect(x_off+832+175, y_off, 1000, 832);
+    
+    noFill();
+    stroke(280, 0, 75);
+    for (int i = 0; i < 62; i++) {
+      for (int j = 0; j < s; j++) {
+        rect(i*(d*sq_s)+x_off+832+175, j*(d*sq_s)+y_off, sq_s*d, sq_s*d);
+      }
+    }
 
     // Evaluation Graph
     stroke(black);
@@ -138,6 +182,7 @@ void draw() {
     line(170+x_off+832, y_off+832, 170+x_off+832+1000, y_off+832);
 
     
+    // potential an dem Data-Point
     if (counter <= max_data_point) {  // Eigentlich sind die ersten 500 interessant
       int scale = 1000/ counter;
       for (int i = 1; i < counter; i++) {
@@ -151,20 +196,28 @@ void draw() {
           x_off+832+176+(scale*i), map(tr[i], 0.00, 100.00, y_off+832, y_off));
       }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    
+    // Graph Overrelaxation
+    stroke(280, 100, 100);
+    if (counter <= max_data_point) {  // Eigentlich sind die ersten 500 interessant
+      int scale = 1000/ counter;
+      for (int i = 1; i < counter; i++) {
+        line(x_off+832+176+(scale*(i-1)), map(or[i-1], -250.00, 250.00, y_off+832, y_off), 
+          x_off+832+176+(scale*i), map(or[i], -250.00, 250.00, y_off+832, y_off));
+      }
+    } else {
+      int scale = 1000/ max_data_point;
+      for (int i = 1; i < max_data_point; i++) {
+        line(x_off+832+176+(scale*(i-1)), map(or[i-1], -250.00, 250.00, y_off+832, y_off), 
+          x_off+832+176+(scale*i), map(or[i], -250.00, 250.00, y_off+832, y_off));
+      }
+    }
+    
+    
+    
+    
+    
+    
     // potential Field
     noStroke();
     for (int i = 0; i < s*d; i++) {
