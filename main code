@@ -12,8 +12,8 @@ int[][] oa = new int[s][s];
 float[][] pa = new float[s*d][s*d];
 
 // data logger for point:
-int p_x = 25; // 21
-int p_y = 25; // 26
+int p_x = 21; // 21
+int p_y = 26; // 26
 int max_data_point = 999;  // Maximale Anzahl (fehlerfrei) biss 1000
 float[] tr = new float[1000000]; // einfach mal geraten, dass vorher das feld fertig gerechnet ist
 float[] or = new float[1000000];
@@ -46,49 +46,49 @@ void setup() {
       oa[i][j] = -1;
     }
   }
+
   
-  /*
   // Anordnung A
-  int p_rahmen = 0;
-  p_rect(0, 0, 1, 52, p_rahmen);
-  p_rect(0, 0, 52, 1, p_rahmen);
-  p_rect(0, 51, 52, 1, p_rahmen);
-  p_rect(51, 0, 1, 52, p_rahmen);
-  
-  p_rect(9, 24, 4, 4, 100);
-  */
-  
+   int p_rahmen = 0;
+   p_rect(0, 0, 1, 52, p_rahmen);
+   p_rect(0, 0, 52, 1, p_rahmen);
+   p_rect(0, 51, 52, 1, p_rahmen);
+   p_rect(51, 0, 1, 52, p_rahmen);
+   
+   p_rect(9, 24, 4, 4, 100);
+   
+
   /*
   // Anordnung B
-  int p_rahmen = 0;
-  p_rect(0, 0, 1, 52, p_rahmen);
-  p_rect(0, 0, 52, 1, p_rahmen);
-  p_rect(0, 51, 52, 1, p_rahmen);
-  p_rect(51, 0, 1, 52, p_rahmen);
-  
-  p_rect(9, 24, 4, 4, 100);
-  p_rect(25, 6, 1, 40, 0);
-  */
-  
+   int p_rahmen = 0;
+   p_rect(0, 0, 1, 52, p_rahmen);
+   p_rect(0, 0, 52, 1, p_rahmen);
+   p_rect(0, 51, 52, 1, p_rahmen);
+   p_rect(51, 0, 1, 52, p_rahmen);
+   
+   p_rect(9, 24, 4, 4, 100);
+   p_rect(25, 6, 1, 40, 0);
+   */
+/*
   // Anordnung C
   int p_rahmen = 20;
   p_rect(0, 0, 1, 52, p_rahmen);
   p_rect(0, 0, 52, 1, p_rahmen);
   p_rect(0, 51, 52, 1, p_rahmen);
   p_rect(51, 0, 1, 52, p_rahmen);
-  
+
   p_rect(9, 24, 4, 4, 100);
   p_rect(41, 24, 4, 4, 0);
-  
-  
-  
+*/
+
+
   //p_rect(25, 6, 1, 40, 0);
-  
+
 
   //p_rect(40, 4, 4, 6, 80);
   //p_rect(30, 30, 3, 8, 100);
   //p_rect(36, 30, 3, 8, 20);
-  
+
   // Skala
   for (int i = 20; i >= 1; i--) {
     fill(map(float(i*5), 0, 100, 240, 60), 100, 100);
@@ -130,12 +130,45 @@ void setup() {
     line(x_off+sq_s*d*(i+11), y_off+832, x_off+sq_s*d*(i+11), y_off+832+10+l);
     text(i, x_off+sq_s*d*(i+11)-10, y_off+832+30);
   }
+
+  // Skala Graphen
+  for (int i = 100; i > 0; i--) {
+    int l;
+    if ( i % 5 == 0) {
+      fill(255, 0, 0);
+      l = 5;
+
+      stroke(255, 0, 0);
+
+      line(x_off+832+175, y_off+8.3*i+2, x_off+832+175-5-l, y_off+8.3*i+2);
+      text(100-i, x_off+832+175-30, y_off+8.3*i+5);
+
+      fill(205, 100, 100);
+      //text(100-i, x_off+832+175-65, y_off+8.3*i+5);
+    } else {
+      l = 0;
+
+      stroke(255, 0, 0);
+
+      line(x_off+832+175, y_off+8.3*i+2, x_off+832+175-5-l, y_off+8.3*i+2);
+    }
+    if (i % 10 == 0) {
+      fill(280, 100, 100);
+      text(log10(100-i), x_off+832+175+1032-35, y_off+8.3*i+5);
+    }
+  }
+  //text("Durchschnitts Potential", x_off+832+175+350, y_off);
+
+  fill(280, 100, 100);
+  text("Overrelaxation am Punkt", x_off+832+175+1032-170, y_off);
+  fill(black);
+  text("Potential [V] am Punkt für k<1000", x_off+832+175+20, y_off);
 }
 
 void draw() {
 
   if ( k <= abs(delta)) {
-    println((k<=abs(delta))?"true":"false");
+    //println((k<=abs(delta))?"true":"false");
     for (int i = 0; i < s*d-1; i++) {
       for (int j = 0; j < s*d-1; j++) {
         if (oa[int(i/2)][int(j/2)] <= -1) {
@@ -149,11 +182,9 @@ void draw() {
     }
     tr[counter] = pa[p_x][p_y];
     counter++;
-    if(counter > 0){
+    if (counter > 0) {
       or[counter] = (tr[counter] - tr[counter-1])*f+tr[counter-1];
-    }
-    else{
-      
+    } else {
     }
     delta /= s*d*s*d;
 
@@ -163,14 +194,15 @@ void draw() {
     stroke(white);
     fill(white);
     rect(x_off+832+175, y_off, 1000, 832);
-    
+    /*
     noFill();
-    stroke(280, 0, 75);
-    for (int i = 0; i < 62; i++) {
-      for (int j = 0; j < s; j++) {
-        rect(i*(d*sq_s)+x_off+832+175, j*(d*sq_s)+y_off, sq_s*d, sq_s*d);
-      }
-    }
+     stroke(280, 0, 75);
+     for (int i = 0; i < 62; i++) {
+     for (int j = 0; j < s; j++) {
+     rect(i*(d*sq_s)+x_off+832+175, j*(d*sq_s)+y_off, sq_s*d, sq_s*d);
+     }
+     }
+     */
 
     // Evaluation Graph
     stroke(black);
@@ -181,7 +213,7 @@ void draw() {
     triangle(170+x_off+832+1000-10, y_off+832-5, 170+x_off+832+1000-10, y_off+832+5, 170+x_off+1000+832, y_off+832);
     line(170+x_off+832, y_off+832, 170+x_off+832+1000, y_off+832);
 
-    
+
     // potential an dem Data-Point
     if (counter <= max_data_point) {  // Eigentlich sind die ersten 500 interessant
       int scale = 1000/ counter;
@@ -196,28 +228,47 @@ void draw() {
           x_off+832+176+(scale*i), map(tr[i], 0.00, 100.00, y_off+832, y_off));
       }
     }
-    
-    // Graph Overrelaxation
-    stroke(280, 100, 100);
+    /*
+    // Graph delta
+    stroke(205, 100, 100);
     if (counter <= max_data_point) {  // Eigentlich sind die ersten 500 interessant
       int scale = 1000/ counter;
       for (int i = 1; i < counter; i++) {
-        line(x_off+832+176+(scale*(i-1)), map(or[i-1], -250.00, 250.00, y_off+832, y_off), 
-          x_off+832+176+(scale*i), map(or[i], -250.00, 250.00, y_off+832, y_off));
+        line(x_off+832+176+(scale*(i-1)), map(or[i-1], -50.00, 50.00, y_off+832, y_off), 
+          x_off+832+176+(scale*i), map(or[i], -50.00, 50.00, y_off+832, y_off));
       }
     } else {
       int scale = 1000/ max_data_point;
       for (int i = 1; i < max_data_point; i++) {
-        line(x_off+832+176+(scale*(i-1)), map(or[i-1], -250.00, 250.00, y_off+832, y_off), 
-          x_off+832+176+(scale*i), map(or[i], -250.00, 250.00, y_off+832, y_off));
+        line(x_off+832+176+(scale*(i-1)), map(or[i-1], -50.00, 50.00, y_off+832, y_off), 
+          x_off+832+176+(scale*i), map(or[i], -50.00, 50.00, y_off+832, y_off));
       }
     }
-    
-    
-    
-    
-    
-    
+*/
+
+    // Graph Overrelaxation
+
+    stroke(280, 100, 100);
+    if (counter <= max_data_point) {  // Eigentlich sind die ersten 500 interessant
+      int scale = 1000/ counter;
+      for (int i = 1; i < counter; i++) {
+        line(x_off+832+176+(scale*(i-1)), y_off+832-log10(abs(or[i-1]))*832/4, 
+          x_off+832+176+(scale*i), y_off+832-log10(abs(or[i]))*832/4);
+        println(or[i] + "|" +log10(abs(or[i])));
+      }
+    } else {
+      int scale = 1000/ max_data_point;
+      for (int i = 1; i < max_data_point; i++) {
+        line(x_off+832+176+(scale*(i-1)), y_off+832-log10(abs(or[i-1]))*832/4, 
+          x_off+832+176+(scale*i), y_off+832-log10(abs(or[i]))*832/4);
+      }
+    }
+
+
+
+
+
+
     // potential Field
     noStroke();
     for (int i = 0; i < s*d; i++) {
@@ -275,4 +326,10 @@ void p_rect(int x, int y, int xs, int ys, int p) {
       }
     }
   }
+}
+
+// Calculates the base-10 logarithm of a number
+float log10 (float x) {
+  //println("log");
+  return (log(x) / log(10));
 }
