@@ -11,8 +11,6 @@ int d = 2;
 
 int s = 52;
 
-
-
 int[][] oa = new int[s][s];
 float[][] pa = new float[s*d][s*d];
 
@@ -85,14 +83,6 @@ void setup() {
   p_rect(9, 24, 4, 4, 100);
   p_rect(41, 24, 4, 4, 0);
 */
-
-
-  //p_rect(25, 6, 1, 40, 0);
-
-
-  //p_rect(40, 4, 4, 6, 80);
-  //p_rect(30, 30, 3, 8, 100);
-  //p_rect(36, 30, 3, 8, 20);
 
   // Skala
   for (int i = 20; i >= 1; i--) {
@@ -199,15 +189,7 @@ void draw() {
     stroke(white);
     fill(white);
     rect(x_off+832+175, y_off, 1000, 832);
-    /*
-    noFill();
-     stroke(280, 0, 75);
-     for (int i = 0; i < 62; i++) {
-     for (int j = 0; j < s; j++) {
-     rect(i*(d*sq_s)+x_off+832+175, j*(d*sq_s)+y_off, sq_s*d, sq_s*d);
-     }
-     }
-     */
+ 
 
     // Evaluation Graph
     stroke(black);
@@ -233,23 +215,6 @@ void draw() {
           x_off+832+176+(scale*i), map(tr[i], 0.00, 100.00, y_off+832, y_off));
       }
     }
-    /*
-    // Graph delta
-    stroke(205, 100, 100);
-    if (counter <= max_data_point) {  // Eigentlich sind die ersten 500 interessant
-      int scale = 1000/ counter;
-      for (int i = 1; i < counter; i++) {
-        line(x_off+832+176+(scale*(i-1)), map(or[i-1], -50.00, 50.00, y_off+832, y_off), 
-          x_off+832+176+(scale*i), map(or[i], -50.00, 50.00, y_off+832, y_off));
-      }
-    } else {
-      int scale = 1000/ max_data_point;
-      for (int i = 1; i < max_data_point; i++) {
-        line(x_off+832+176+(scale*(i-1)), map(or[i-1], -50.00, 50.00, y_off+832, y_off), 
-          x_off+832+176+(scale*i), map(or[i], -50.00, 50.00, y_off+832, y_off));
-      }
-    }
-*/
 
     // Graph Overrelaxation
 
@@ -268,11 +233,6 @@ void draw() {
           x_off+832+176+(scale*i), y_off+832-log10(abs(or[i]))*832/4);
       }
     }
-
-
-
-
-
 
     // potential Field
     noStroke();
@@ -309,11 +269,6 @@ void draw() {
   } else {
     noLoop();
     save("field.png");
-
-    println("C: " + counter);
-    for (int i = 0; i < counter; i++) {
-      print(tr[i] + ";");
-    }
   }
 }
 
