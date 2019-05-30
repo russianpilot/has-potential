@@ -9,12 +9,12 @@ int[][] oa = new int[s][s];
 float[][] pa = new float[s*d][s*d];
 
 // data logger for point:
-int p_x = 1;
-int p_y = 1;
+int p_x = 21;
+int p_y = 26;
 float[] tr = new float[1000000]; // einfach mal geraten, dass vorher das feld fertig gerechnet ist
 
-float delta = 10;
-float k = 10; // Iteration Steps
+float k = 1; // Potentialdifferenz fürs gesamte Feld
+float delta = k;
 int counter = 0;
 
 int x_off = 50;
@@ -114,9 +114,9 @@ void draw() {
     for (int i = 0; i < s*d-1; i++) {
       for (int j = 0; j < s*d-1; j++) {
         if (oa[int(i/2)][int(j/2)] <= -1) {
-          delta += pa[i][j]*100;
+          delta += pa[i][j]*1000;
           pa[i][j] = (pa[i-1][j]+pa[i+1][j]+pa[i][j-1]+pa[i][j+1])/4;
-          delta -= pa[i][j]*100;
+          delta -= pa[i][j]*1000;
 
           // data logger
           if (p_x == i && p_y == j) {
@@ -132,7 +132,7 @@ void draw() {
     noStroke();
     for (int i = 0; i < s*d; i++) {
       for (int j = 0; j < s*d; j++) {
-        fill(pa[i][j], 100, 100);
+        fill(map(pa[i][j], 0, 100, 240, 60), 100, 100);
         rect(i*sq_s+x_off, j*sq_s+y_off, sq_s, sq_s);
       }
     }
@@ -147,7 +147,7 @@ void draw() {
     text("Diff: ", 120, 20); text(abs(delta), 160, 20);
     text("Counter: ", 250, 20); text(counter, 320, 20);
     
-    text("Potential ("+ (p_x-11) + "|" + (p_y-26) + "): "+ map((pa[p_x][p_y]+pa[p_x+1][p_y]+pa[p_x][p_y+1]+pa[p_x+1][p_y+1])/4, 240, 60, 0, 100), 5, 40);
+    text("Potential ("+ (p_x-11) + "|" + (p_y-26) + "): "+ (pa[p_x][p_y]+pa[p_x+1][p_y]+pa[p_x][p_y+1]+pa[p_x+1][p_y+1])/4, 5, 40);
   }
   else{
     save("field.png");
@@ -175,13 +175,8 @@ void p_rect(int x, int y, int xs, int ys, int p) {
   for (int i = 0; i < s*d; i++) {
     for (int j = 0; j < s*d; j++) {
       if (oa[int(i/2)][int(j/2)] > -1) {
-        pa[i][j] = map(oa[int(i/2)][int(j/2)], 0, 100, 240, 60);
+        pa[i][j] = oa[int(i/2)][int(j/2)];
       }
     }
   }
-  /*
-  stroke(0, 0, 100);
-   noFill();
-   rect(x*d+1,y*d+1,(x+xs)*d-1,(y+ys)*d-1);
-   */
 }
